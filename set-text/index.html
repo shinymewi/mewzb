@@ -17,15 +17,20 @@
   <a href="https://archiveofourown.org/works/52778758">original script by feind</a>
 
   <script>
-function sendAo3Name() {
-  const ao3name = window.prompt('Please enter your desired name:');
+function sendCustomText() {
+  const ao3name = window.prompt('Please enter text:');
   if (ao3name) {
-    fetch(`/setao3name/${encodeURIComponent(ao3name)}`)
+    fetch(`/setctext/${encodeURIComponent(ao3name)}`, { credentials:'include' })
       .then(response => {
         if (response.ok) {
-          window.alert('Name set successfully. You may need to reload the AO3 page to see the changes.');
+          window.alert('Text set successfully. You may need to reload the page to see the changes.');
+          fetch('/ao3name', { credentials: 'include' })
+                 .then(response => response.text())
+                 .then(svgText => {
+                   console.log("SVG content:", svgText);
+            });
         } else {
-          window.alert('An error occurred. Please try again, or contact me on Discord: #deinfeind');
+          window.alert('An error occurred. Please try again, or contact me on AO3: Mewzebub');
         }
         window.setTimeout(() => {
           window.history.back()
@@ -34,22 +39,22 @@ function sendAo3Name() {
         newImage.onload = function () {
           window.history.back()
         }
-        newImage.src = '/ao3name'
+        newImage.crossOrigin = 'use-credentials'
+        newImage.src = '/ctext'
       })
       .catch(error => {
         console.error('Error:', error);
-        window.alert('An error occurred. Please try again, or contact me on Discord: #deinfeind');
+        window.alert('An error occurred. Please try again, or contact me on AO3: Mewzebub');
         window.history.back();
       });
   } else {
-    window.alert('No name entered.');
+    window.alert('No text entered.');
     window.history.back();
   }
 }
 
-// Run the function when the page is fully loaded
 window.onload = function() {
-  window.setTimeout(sendAo3Name, 1000);
+  window.setTimeout(sendCustomText, 1000);
 };
   </script>
 </body>
