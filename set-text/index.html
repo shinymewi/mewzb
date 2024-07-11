@@ -18,13 +18,13 @@
 
   <script>
 function sendCustomText() {
-  const ao3name = window.prompt('Please enter text:');
-  if (ao3name) {
-    fetch(`/setctext/${encodeURIComponent(ao3name)}`, { credentials:'include' })
+  const ctext = window.prompt('Please enter text:');
+  if (ctext) {
+    fetch(`/setctext/${encodeURIComponent(ctext)}`, { credentials:'include' })
       .then(response => {
         if (response.ok) {
           window.alert('Text set successfully. You may need to reload the page to see the changes.');
-          fetch('/ao3name', { credentials: 'include' })
+          fetch('/ctext', { credentials: 'include' })
                  .then(response => response.text())
                  .then(svgText => {
                    console.log("SVG content:", svgText);
