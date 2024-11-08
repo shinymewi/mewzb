@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "@svgdotjs/svg.js": "^3.2.4",
-    "netlify-cli": "^17.37.2",
     "svgdom": "^0.1.19"
   }
 }
