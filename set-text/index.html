@@ -17,47 +17,51 @@
   <a href="https://archiveofourown.org/works/52778758">original script by feind</a>
 
   <script>
-function sendCustomText() {
-  const ctext = window.prompt('Please enter text:');
-  if (ctext) {
-    fetch(`/setctext/${encodeURIComponent(ctext)}`, { credentials:'include' })
-      .then(response => {
-        if (response.ok) {
-          window.alert('Text set successfully. You may need to reload the page to see the changes.');
-          fetch('/ctext', { credentials: 'include' })
-                 .then(response => response.text())
-                 .then(svgText => {
-                   console.log("SVG content:", svgText);
+    function sendCustomText() {
+      const ctext = window.prompt('Please enter text:');
+      if (ctext) {
+        fetch(`/setctext/${encodeURIComponent(ctext)}`, { 
+          credentials: 'include',
+          mode: 'cors'
+        })
+        .then(response => {
+          if (response.ok) {
+            window.alert('Text set successfully. You may need to reload the page to see the changes.');
+            fetch('/ctext', { 
+              credentials: 'include',
+              mode: 'cors'
+            })
+            .then(response => response.text())
+            .then(svgText => {
+              console.log("SVG content:", svgText);
             });
-        } else {
+          } else {
+            window.alert('An error occurred. Please try again, or contact me on AO3: Mewzebub');
+          }
+          window.setTimeout(() => {
+            window.history.back()
+          }, 5000)
+          let newImage = new Image()
+          newImage.onload = function () {
+            window.history.back()
+          }
+          newImage.crossOrigin = 'use-credentials'
+          newImage.src = '/ctext'
+        })
+        .catch(error => {
+          console.error('Error:', error);
           window.alert('An error occurred. Please try again, or contact me on AO3: Mewzebub');
-        }
-        window.setTimeout(() => {
-          window.history.back()
-        }, 5000)
-        let newImage = new Image()
-        newImage.onload = function () {
-          window.history.back()
-        }
-        newImage.crossOrigin = 'use-credentials'
-        newImage.src = '/ctext'
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        window.alert('An error occurred. Please try again, or contact me on AO3: Mewzebub');
+          window.history.back();
+        });
+      } else {
+        window.alert('No text entered.');
         window.history.back();
-      });
-  } else {
-    window.alert('No text entered.');
-    window.history.back();
-  }
-}
+      }
+    }
 
-window.onload = function() {
-  window.setTimeout(sendCustomText, 1000);
-};
+    window.onload = function() {
+      window.setTimeout(sendCustomText, 1000);
+    };
   </script>
 </body>
-
 </html>
-
