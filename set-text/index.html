@@ -20,17 +20,11 @@
     function sendCustomText() {
       const ctext = window.prompt('Please enter text:');
       if (ctext) {
-        fetch(`/setctext/${encodeURIComponent(ctext)}`, { 
-          credentials: 'include',
-          mode: 'cors'
-        })
+        fetch(`/setctext/${encodeURIComponent(ctext)}`)
         .then(response => {
           if (response.ok) {
             window.alert('Text set successfully. You may need to reload the page to see the changes.');
-            fetch('/ctext', { 
-              credentials: 'include',
-              mode: 'cors'
-            })
+            fetch('/ctext')
             .then(response => response.text())
             .then(svgText => {
               console.log("SVG content:", svgText);
@@ -45,7 +39,6 @@
           newImage.onload = function () {
             window.history.back()
           }
-          newImage.crossOrigin = 'use-credentials'
           newImage.src = '/ctext'
         })
         .catch(error => {
